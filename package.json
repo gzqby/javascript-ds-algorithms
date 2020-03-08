@@ -1,0 +1,47 @@
+{
+  "name": "javascript-ds-algorithms",
+  "version": "1.0.0",
+  "description": "javascript-ds-algorithms",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "clean": "rimraf ./dist ./coverage ./testReport/*",
+    "build:js": "babel src -d dist",
+    "build:ts": "tsc",
+    "build": "yarn run build:js && yarn run build:ts",
+    "lint:js": "eslint src/js && eslint test/js",
+    "lint:ts": "tslint -c tslint.json 'src/ts/**/*.ts' && tslint -c tslint.json 'test/ts/**/*.ts'",
+    "lint": "npm run lint:js && npm run lint:ts",
+    "eslintFix": "eslint src/js --fix && eslint test/js --fix",
+    "tslintFix": "tslint -c tslint.json 'src/ts/**/*.ts' --fix && tslint -c tslint.json 'test/ts/**/*.ts' --fix",
+    "lintFix": "npm run eslintFix && npm run tslintFix",
+    "test:js": "jest ./test/js",
+    "test:ts": "jest --preset ts-jest ./test/ts",
+    "test": "npm run test:js && npm run test:ts",
+    "generate-report:js": "jest --coverage --json --outputFile='./testReport/js-test.json' ./test/js",
+    "generate-report:ts": "jest -c jest.tsc.config.js --coverage --json --outputFile='./testReport/ts-test.json'",
+    "generate-report": "npm run generate-report:js && npm run generate-report:ts",
+    "go": "npm run clean && npm run build && npm run test",
+  },
+  "author": "zgo",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/preset-typescript": "^7.8.3",
+    "@types/jest": "^25.1.4",
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.2.1",
+    "tslint": "^6.0.0",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
+  }
+}
