@@ -1,5 +1,5 @@
 Arguments: 
-  C:\dev\nodejs\node.exe C:\dev\npm\node_modules\yarn\bin\yarn.js test:js
+  C:\dev\nodejs\node.exe C:\dev\npm\node_modules\yarn\bin\yarn.js build
 
 PATH: 
   C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;%NVM_HOME%;%NVM_SYMLINK%;C:\dev\Git\cmd;C:\Program Files\TortoiseSVN\bin;%DENO_HOME%;C:\Go\bin;C:\Users\zguob\AppData\Local\Microsoft\WindowsApps;C:\dev\nvm;C:\dev\nodejs;C:\Users\zguob\AppData\Local\Programs\Microsoft VS Code\bin;C:\dev\npm;C:\dev\Java\bin;C:\dev\Java\jre\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2019.2\bin;C:\Users\zguob\.deno\bin;C:\Program Files\MySQL\MySQL Server 5.7\bin;C:\Users\zguob\go\bin;C:\Users\zguob\AppData\Local\Android\Sdk\platform-tools;C:\code\GoCode\bin;
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  SyntaxError: C:\code\GIT\javascript-datastructures-algorithms-old\package.json: Unexpected token } in JSON at position 1369
+  SyntaxError: C:\code\GIT\javascript-datastructures-algorithms-old\package.json: Unexpected token } in JSON at position 1267
       at JSON.parse (<anonymous>)
       at C:\dev\npm\node_modules\yarn\lib\cli.js:1625:59
       at Generator.next (<anonymous>)
@@ -26,12 +26,11 @@ npm manifest:
     "name": "javascript-ds-algorithms",
     "version": "1.0.0",
     "description": "javascript-ds-algorithms",
-    "main": "index.js",
     "directories": {
       "test": "test"
     },
     "scripts": {
-      "clean": "rimraf ./dist ./coverage ./.nyc_output ./coverage.lcov ./mochawesome-report",
+      "clean": "rimraf ./dist ./coverage ./testReport/*",
       "build:js": "babel src -d dist",
       "build:ts": "tsc",
       "build": "yarn run build:js && yarn run build:ts",
@@ -41,13 +40,13 @@ npm manifest:
       "eslintFix": "eslint src/js --fix && eslint test/js --fix",
       "tslintFix": "tslint -c tslint.json 'src/ts/**/*.ts' --fix && tslint -c tslint.json 'test/ts/**/*.ts' --fix",
       "lintFix": "npm run eslintFix && npm run tslintFix",
-      "test:js": "jest --coveragr ./test/js --outputFile='./testReport/index.md'",
-      "test:ts": "jest --coveragr ts-node/register ./test/ts/**/*.test.ts --outputFile='./testReport/index.md'",
+      "test:js": "jest ./test/js",
+      "test:ts": "jest --preset ts-jest ./test/ts",
       "test": "npm run test:js && npm run test:ts",
-      "dev": "npm run clean && npm run lint && npm run webpack && npm run generate-report",
-      "dev2": "npm run clean && npm run lint && npm run webpack && npm run generate-report2",
-      "go": "npm run clean && npm run lint && npm run build && npm run test",
-      "webpack": "webpack --env build",
+      "generate-report:js": "jest --coverage --json --outputFile='./testReport/js-test.json' ./test/js",
+      "generate-report:ts": "jest -c jest.tsc.config.js --coverage --json --outputFile='./testReport/ts-test.json'",
+      "generate-report": "npm run generate-report:js && npm run generate-report:ts",
+      "go": "npm run clean && npm run build && npm run test",
     },
     "author": "zgo",
     "license": "ISC",
@@ -55,12 +54,15 @@ npm manifest:
       "@babel/cli": "^7.8.4",
       "@babel/core": "^7.8.7",
       "@babel/preset-env": "^7.8.7",
+      "@babel/preset-typescript": "^7.8.3",
+      "@types/jest": "^25.1.4",
       "babel-plugin-add-module-exports": "^1.0.2",
       "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
       "eslint": "^6.8.0",
       "eslint-config-airbnb-base": "^14.0.0",
       "eslint-plugin-import": "^2.20.1",
       "jest": "^25.1.0",
+      "ts-jest": "^25.2.1",
       "tslint": "^6.0.0",
       "typescript": "^3.8.3",
       "webpack": "^4.42.0",
@@ -173,6 +175,18 @@ Lockfile:
       invariant "^2.2.4"
       levenary "^1.1.1"
       semver "^5.5.0"
+  
+  "@babel/helper-create-class-features-plugin@^7.8.3":
+    version "7.8.6"
+    resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/@babel/helper-create-class-features-plugin/-/helper-create-class-features-plugin-7.8.6.tgz#243a5b46e2f8f0f674dc1387631eb6b28b851de0"
+    integrity sha512-klTBDdsr+VFFqaDHm5rR69OpEQtO2Qv8ECxHS1mNhJJvaHArR6a1xTf5K/eZW7eZpJbhCx3NW1Yt/sKsLXLblg==
+    dependencies:
+      "@babel/helper-function-name" "^7.8.3"
+      "@babel/helper-member-expression-to-functions" "^7.8.3"
+      "@babel/helper-optimise-call-expression" "^7.8.3"
+      "@babel/helper-plugin-utils" "^7.8.3"
+      "@babel/helper-replace-supers" "^7.8.6"
+      "@babel/helper-split-export-declaration" "^7.8.3"
   
   "@babel/helper-create-regexp-features-plugin@^7.8.3":
     version "7.8.6"
@@ -466,6 +480,13 @@ Lockfile:
     dependencies:
       "@babel/helper-plugin-utils" "^7.8.3"
   
+  "@babel/plugin-syntax-typescript@^7.8.3":
+    version "7.8.3"
+    resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/@babel/plugin-syntax-typescript/-/plugin-syntax-typescript-7.8.3.tgz#c1f659dda97711a569cef75275f7e15dcaa6cabc"
+    integrity sha512-GO1MQ/SGGGoiEXY0e0bSpHimJvxqB7lktLLIq2pv8xG7WZ8IMEle74jIe1FhprHBWjwjZtXHkycDLZXIWM5Wfg==
+    dependencies:
+      "@babel/helper-plugin-utils" "^7.8.3"
+  
   "@babel/plugin-transform-arrow-functions@^7.8.3":
     version "7.8.3"
     resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/@babel/plugin-transform-arrow-functions/-/plugin-transform-arrow-functions-7.8.3.tgz#82776c2ed0cd9e1a49956daeb896024c9473b8b6"
@@ -703,6 +724,15 @@ Lockfile:
     dependencies:
       "@babel/helper-plugin-utils" "^7.8.3"
   
+  "@babel/plugin-transform-typescript@^7.8.3":
+    version "7.8.7"
+    resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/@babel/plugin-transform-typescript/-/plugin-transform-typescript-7.8.7.tgz#48bccff331108a7b3a28c3a4adc89e036dc3efda"
+    integrity sha512-7O0UsPQVNKqpHeHLpfvOG4uXmlw+MOxYvUv6Otc9uH5SYMIxvF6eBdjkWvC3f9G+VXe0RsNExyAQBeTRug/wqQ==
+    dependencies:
+      "@babel/helper-create-class-features-plugin" "^7.8.3"
+      "@babel/helper-plugin-utils" "^7.8.3"
+      "@babel/plugin-syntax-typescript" "^7.8.3"
+  
   "@babel/plugin-transform-unicode-regex@^7.8.3":
     version "7.8.3"
     resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/@babel/plugin-transform-unicode-regex/-/plugin-transform-unicode-regex-7.8.3.tgz#0cef36e3ba73e5c57273effb182f46b91a1ecaad"
@@ -773,6 +803,14 @@ Lockfile:
       invariant "^2.2.2"
       levenary "^1.1.1"
       semver "^5.5.0"
+  
+  "@babel/preset-typescript@^7.8.3":
+    version "7.8.3"
+    resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/@babel/preset-typescript/-/preset-typescript-7.8.3.tgz#90af8690121beecd9a75d0cc26c6be39d1595d13"
+    integrity sha512-qee5LgPGui9zQ0jR1TeU5/fP9L+ovoArklEqY12ek8P/wV5ZeM/VYSQYwICeoT6FfpJTekG9Ilay5PhwsOpMHA==
+    dependencies:
+      "@babel/helper-plugin-utils" "^7.8.3"
+      "@babel/plugin-transform-typescript" "^7.8.3"
   
   "@babel/runtime@^7.8.4":
     version "7.8.7"
@@ -1065,6 +1103,14 @@ Lockfile:
     dependencies:
       "@types/istanbul-lib-coverage" "*"
       "@types/istanbul-lib-report" "*"
+  
+  "@types/jest@^25.1.4":
+    version "25.1.4"
+    resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/@types/jest/-/jest-25.1.4.tgz#9e9f1e59dda86d3fd56afce71d1ea1b331f6f760"
+    integrity sha512-QDDY2uNAhCV7TMCITrxz+MRk1EizcsevzfeS6LykIlq2V1E5oO4wXG8V2ZEd9w7Snxeeagk46YbMgZ8ESHx3sw==
+    dependencies:
+      jest-diff "^25.1.0"
+      pretty-format "^25.1.0"
   
   "@types/stack-utils@^1.0.1":
     version "1.0.1"
@@ -1796,6 +1842,13 @@ Lockfile:
       electron-to-chromium "^1.3.363"
       node-releases "^1.1.50"
   
+  bs-logger@0.x:
+    version "0.2.6"
+    resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/bs-logger/-/bs-logger-0.2.6.tgz#eb7d365307a72cf974cc6cda76b68354ad336bd8"
+    integrity sha512-pd8DCoxmbgc7hyPKOvxtqNcjYoOsABPQdcCUjGp3d42VR2CX1ORhk2A87oqqu5R1kk+76nsxZupkmyd+MVtCog==
+    dependencies:
+      fast-json-stable-stringify "2.x"
+  
   bser@2.1.1:
     version "2.1.1"
     resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/bser/-/bser-2.1.1.tgz#e6787da20ece9d07998533cfd9de6f5c38f4bc05"
@@ -1803,7 +1856,7 @@ Lockfile:
     dependencies:
       node-int64 "^0.4.0"
   
-  buffer-from@^1.0.0:
+  buffer-from@1.x, buffer-from@^1.0.0:
     version "1.1.1"
     resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
     integrity sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
@@ -2823,7 +2876,7 @@ Lockfile:
     resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/fast-deep-equal/-/fast-deep-equal-3.1.1.tgz#545145077c501491e33b15ec408c294376e94ae4"
     integrity sha512-8UEa58QDLauDNfpbrX55Q9jrGHThw2ZMdOky5Gl1CDtVeJDPVrG4Jxx1N8jw2gkWaff5UUuX1KJd+9zGe2B+ZA==
   
-  fast-json-stable-stringify@^2.0.0:
+  fast-json-stable-stringify@2.x, fast-json-stable-stringify@^2.0.0:
     version "2.1.0"
     resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/fast-json-stable-stringify/-/fast-json-stable-stringify-2.1.0.tgz#874bf69c6f404c2b5d99c481341399fd55892633"
     integrity sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==
@@ -4121,17 +4174,17 @@ Lockfile:
     resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
     integrity sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
   
+  json5@2.x, json5@^2.1.0:
+    version "2.1.1"
+    resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/json5/-/json5-2.1.1.tgz#81b6cb04e9ba496f1c7005d07b4368a2638f90b6"
+    integrity sha512-l+3HXD0GEI3huGq1njuqtzYK8OYJyXMkOLtQ53pjWh89tvWS2h6l+1zMkYWqlb57+SiQodKZyvMEFb2X+KrFhQ==
+    dependencies:
+      minimist "^1.2.0"
+  
   json5@^1.0.1:
     version "1.0.1"
     resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/json5/-/json5-1.0.1.tgz#779fb0018604fa854eacbf6252180d83543e3dbe"
     integrity sha512-aKS4WQjPenRxiQsC93MNfjx+nbF4PAdYzmd/1JIj8HYzqfbu86beTuNgXDzPknWk0n0uARlyewZo4s++ES36Ow==
-    dependencies:
-      minimist "^1.2.0"
-  
-  json5@^2.1.0:
-    version "2.1.1"
-    resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/json5/-/json5-2.1.1.tgz#81b6cb04e9ba496f1c7005d07b4368a2638f90b6"
-    integrity sha512-l+3HXD0GEI3huGq1njuqtzYK8OYJyXMkOLtQ53pjWh89tvWS2h6l+1zMkYWqlb57+SiQodKZyvMEFb2X+KrFhQ==
     dependencies:
       minimist "^1.2.0"
   
@@ -4257,6 +4310,11 @@ Lockfile:
     dependencies:
       p-locate "^4.1.0"
   
+  lodash.memoize@4.x:
+    version "4.1.2"
+    resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
+    integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
+  
   lodash.sortby@^4.7.0:
     version "4.7.0"
     resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
@@ -4302,6 +4360,11 @@ Lockfile:
     integrity sha512-rYKABKutXa6vXTXhoV18cBE7PaewPXHe/Bdq4v+ZLMhxbWApkFFplT0LcbMW+6BbjnQXzZ/sAvSE/JdguApG5w==
     dependencies:
       semver "^6.0.0"
+  
+  make-error@1.x:
+    version "1.3.6"
+    resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/make-error/-/make-error-1.3.6.tgz#2eb2e37ea9b67c4891f684a1394799af484cf7a2"
+    integrity sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==
   
   makeerror@1.0.x:
     version "1.0.11"
@@ -4476,7 +4539,7 @@ Lockfile:
       for-in "^1.0.2"
       is-extendable "^1.0.1"
   
-  mkdirp@^0.5.1:
+  mkdirp@0.x, mkdirp@^0.5.1:
     version "0.5.1"
     resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
     integrity sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
@@ -5384,7 +5447,7 @@ Lockfile:
     resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
     integrity sha1-IDEU2CrSxe2ejgQRs5ModeiJ6Xs=
   
-  resolve@^1.10.0, resolve@^1.12.0, resolve@^1.13.1, resolve@^1.3.2:
+  resolve@1.x, resolve@^1.10.0, resolve@^1.12.0, resolve@^1.13.1, resolve@^1.3.2:
     version "1.15.1"
     resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/resolve/-/resolve-1.15.1.tgz#27bdcdeffeaf2d6244b95bb0f9f4b4653451f3e8"
     integrity sha512-84oo6ZTtoTUpjgNEr5SJyzQhzL72gaRodsSfyxC/AXRvwu0Yse9H8eF9IpGo7b8YetZhlI6v7ZQ6bKBFV/6S7w==
@@ -5512,7 +5575,7 @@ Lockfile:
       ajv-errors "^1.0.0"
       ajv-keywords "^3.1.0"
   
-  "semver@2 || 3 || 4 || 5", semver@^5.3.0, semver@^5.4.1, semver@^5.5.0, semver@^5.6.0:
+  "semver@2 || 3 || 4 || 5", semver@^5.3.0, semver@^5.4.1, semver@^5.5, semver@^5.5.0, semver@^5.6.0:
     version "5.7.1"
     resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
     integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
@@ -6116,6 +6179,22 @@ Lockfile:
     integrity sha1-qLE/1r/SSJUZZ0zN5VujaTtwbQk=
     dependencies:
       punycode "^2.1.0"
+  
+  ts-jest@^25.2.1:
+    version "25.2.1"
+    resolved "http://nexus.saas.hand-china.com/content/groups/srm-npm-group/ts-jest/-/ts-jest-25.2.1.tgz#49bf05da26a8b7fbfbc36b4ae2fcdc2fef35c85d"
+    integrity sha512-TnntkEEjuXq/Gxpw7xToarmHbAafgCaAzOpnajnFC6jI7oo1trMzAHA04eWpc3MhV6+yvhE8uUBAmN+teRJh0A==
+    dependencies:
+      bs-logger "0.x"
+      buffer-from "1.x"
+      fast-json-stable-stringify "2.x"
+      json5 "2.x"
+      lodash.memoize "4.x"
+      make-error "1.x"
+      mkdirp "0.x"
+      resolve "1.x"
+      semver "^5.5"
+      yargs-parser "^16.1.0"
   
   tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0:
     version "1.11.1"
