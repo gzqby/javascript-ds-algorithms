@@ -8,17 +8,17 @@ describe('StackArray', () => {
   });
 
   test('starts empty', () => {
-    expect(stack.size).toEqual(0);
+    expect(stack.size()).toEqual(0);
     expect(stack.isEmpty()).toEqual(true);
   });
 
   test('pushes elements', () => {
     stack.push(1);
-    expect(stack.size).toEqual(1);
+    expect(stack.size()).toEqual(1);
     stack.push(2);
-    expect(stack.size).toEqual(2);
+    expect(stack.size()).toEqual(2);
     stack.push(3);
-    expect(stack.size).toEqual(3);
+    expect(stack.size()).toEqual(3);
 
     expect(stack.isEmpty()).toEqual(false);
   });
@@ -58,14 +58,14 @@ describe('StackArray', () => {
     expect(stack.peek()).toEqual(1);
   });
 
-  test('returns the correct size', () => {
-    expect(stack.size).toEqual(0);
+  test('returns the correct size()', () => {
+    expect(stack.size()).toEqual(0);
     stack.push(1);
-    expect(stack.size).toEqual(1);
+    expect(stack.size()).toEqual(1);
     stack.push(2);
-    expect(stack.size).toEqual(2);
+    expect(stack.size()).toEqual(2);
     stack.push(3);
-    expect(stack.size).toEqual(3);
+    expect(stack.size()).toEqual(3);
 
     stack.clear();
     expect(stack.isEmpty()).toEqual(true);
@@ -75,13 +75,13 @@ describe('StackArray', () => {
     stack.push(3);
 
     stack.pop();
-    expect(stack.size).toEqual(2);
+    expect(stack.size()).toEqual(2);
     stack.pop();
-    expect(stack.size).toEqual(1);
+    expect(stack.size()).toEqual(1);
     stack.pop();
-    expect(stack.size).toEqual(0);
+    expect(stack.size()).toEqual(0);
     stack.pop();
-    expect(stack.size).toEqual(0);
+    expect(stack.size()).toEqual(0);
   });
 
   test('returns if test is empty', () => {
